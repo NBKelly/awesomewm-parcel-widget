@@ -40,3 +40,6 @@ volumebar_widget({
 
 parcelsWidget(),  
 ```
+
+## where did the flags come from?
+Here's a good collection of 16x14 flags which follow ISO conventions. This is basically the first worthwhile thing I found on a yandex search. https://archive.org/details/4chan_flags
