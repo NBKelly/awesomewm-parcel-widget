@@ -24,7 +24,7 @@ Note that you **need** to specify the destination country in this api. This defa
 This is subject to change, and might be different for you than it is for me.
 
 * open rc.lua
-* import exchangeRates somewhere near the top of your file
+* import parcelWidget somewhere near the top of your file
 ```
 local parcelWidget = require("parcelWidget.parcels-widget")
 ```
@@ -34,7 +34,7 @@ volumebar_widget({
     main_color = '#dcdccc',
     mute_color = '#ff0000',
     width = 80,
-		shape = 'powerline',
+    shape = 'powerline',
     margins = 8
 }),
 
