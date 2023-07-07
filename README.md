@@ -10,7 +10,7 @@ A widget for monitoring parcels and tracking numbers using the parcelsapp api
 This depends on the following things:
 * get an api key from https://parcelsapp.com/ (and activate it). This allows you to track up to 10 packages a month on the free tier.
 * I use python3
-* I'm using pycountry. You may need to install it with `pip3 install pycountry`.
+* ~~I'm using pycountry. You may need to install it with `pip3 install pycountry`.~~ I factored this out, you don't need to do this anymore.
 
 ## setup
 * clone this repo into .config/awesome/
