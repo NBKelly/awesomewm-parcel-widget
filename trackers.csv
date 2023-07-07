@@ -1,0 +1,4 @@
+Tracking Number, Name (kind of optional), Destination country (optional - defaults to the country in your config), this first line is not processed
+some_tracking_number,Boxes,New Zealand
+some_tracking_number,singles
+some_tracking_number,cards,United States

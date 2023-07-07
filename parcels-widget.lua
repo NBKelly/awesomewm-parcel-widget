@@ -5,9 +5,9 @@ local beautiful = require("beautiful")
 
 local HOME = os.getenv('HOME')
 local ICON_DIR = HOME .. '/.config/awesome/parcelWidget/flags/'
-local TRACKER_DIR = HOME .. '/.config/awesome/parcelWidget/config.py'
+local TRACKER_DIR = HOME .. '/.config/awesome/parcelWidget/trackers.csv'
 local PYTHON_DIR = HOME .. '/.config/awesome/parcelWidget/parcel.py'
-
+local STATUS_ICON_DIR = HOME .. '/.config/awesome/parcelWidget/icons/'
 local MINUTES_PER_UPDATE=5
 
 
@@ -78,6 +78,13 @@ local function setupRows(menu_items, popup)
 		  valign="top",
 		  widget = wibox.widget.imagebox
 	       },
+	       --{
+	       --  image = STATUS_ICON_DIR .. item.status .. '.png',
+	       --  forced_width = 16,
+	       --  forced_height = 12,
+	       --  valign = "top",
+	       --  widget = wibox.widget.imagebox
+	       --},
 	       {
 		  text = "  "..item.name.."  ",
 		  widget = wibox.widget.textbox,
@@ -137,6 +144,9 @@ local function updateWidget(mywidget, title, popup)
 				    local itemCount = #lines//7
 				    local menu_items = {}
 
+				    local delivered = 0
+				    local pickup = 0
+
 				    for i=0,itemCount-1 do
 				       menu_items[i+1] = {from=lines[7*i + 1],
 							  to=lines[7*i + 2],
@@ -145,13 +155,31 @@ local function updateWidget(mywidget, title, popup)
 							  days=lines[7*i + 5],
 							  tracking=lines[7*i + 6],
 							  status=lines[7*i + 7]}
+
+				       -- make a note of how many are delivered or to be picked up
+				       if lines[7*i + 7] == 'arrived' then
+					  delivered = delivered + 1
+				       end
+				       if lines[7*i + 7] == 'pickup' then
+					  pickup = pickup + 1
+				       end
 				    end
 
 				    -- use the menu items to make the rows
 				    setupRows(menu_items, popup)
 
+				    -- this can probably be done cleaner
+				    local extra_text = ""
+				    if delivered > 0 then
+				       extra_text = ", " ..math.floor(delivered).." delivered"
+				    end
+				    if pickup > 0 then
+				       extra_text = extra_text ..", "
+					  ..math.floor(pickup).." to pickup"
+				    end
 				  -- also setup the header
-				    title:set_text(" ["..math.floor(itemCount).." packages] ")
+				    title:set_text(" ["..math.floor(itemCount).." packages"
+						   ..extra_text.."] ")
 
 				 end,
 				 mywidget)

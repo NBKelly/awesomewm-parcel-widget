@@ -2,12 +2,11 @@ import requests
 import json
 import time
 import config
-#import pycountry
-
+import csv
+import os
+#import pycountry -- don't need this anymore
 
 trackingUrl = 'https://parcelsapp.com/api/v3/shipments/tracking'
-
-# Initiate tracking request
 
 
 shipment_map = {}
@@ -22,21 +21,37 @@ sleep_time = config.SLEEP_TIME
 def load_trackers():
     shipments = []
 
-    for tracker in config.TRACKERS:
+    ## get the file location and load the csv
+    trackers = []
+
+    __location__ = os.path.realpath(
+        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    with open(os.path.join(__location__, 'trackers.csv')) as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        first = True
+        for row in reader:
+            if first:
+                first = False
+                continue
+            if len(row) <= 0:
+                continue
+            trackers.append(row)
+
+    for tracker in trackers:
         shipment = {}
         ### assign a tracking id
         if len(tracker) >= 1:
-            shipment['trackingId'] = tracker[0]
+            shipment['trackingId'] = tracker[0].strip()
 
         ### assign a name to the parcel if we can
         if len(tracker) >= 2:
-            shipment_names[tracker[0]] = tracker[1]
+            shipment_names[tracker[0]] = tracker[1].strip()
         else:
             shipment_names[tracker[0]] = "???"
 
         ### assign a destination country to the parcel, or take default from config
         if len(tracker) >= 3:
-            shipment['country'] = tracker[2]
+            shipment['country'] = tracker[2].strip()
         else:
             shipment['country'] = config.COUNTRY
 
