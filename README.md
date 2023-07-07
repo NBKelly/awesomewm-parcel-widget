@@ -10,15 +10,20 @@ A widget for monitoring parcels and tracking numbers using the parcelsapp api
 This depends on the following things:
 * get an api key from https://parcelsapp.com/ (and activate it). This allows you to track up to 10 packages a month on the free tier.
 * I use python3
-* ~~I'm using pycountry. You may need to install it with `pip3 install pycountry`.~~ I factored this out, you don't need to do this anymore.
+* ~~I'm using pycountry. You may need to install it with `pip3 install pycountry`.~~ I factored this out, you don't need to do this anymore. Later on, I might use pycountry to search input countries and make sure they are iso formatted, but this isn't a priority.
 
 ## setup
 * clone this repo into .config/awesome/
 * edit the config.py (see below)
 * include and add the widget in your rc.lua file
-* edit the config.py to add your api key, then add a tracking number or two to test it out
+* edit the config.py to add your api key and set your default country (where you live)
 
 Note that you **need** to specify the destination country in this api. This defaults to whatever country is selected in config.py, but you can override it for each individual tracking number.
+
+* restart awesome
+* click the `edit trackers` option and add some tracking numbers to try them out
+
+note that the format is `tracking number, name, country`. Name and country are optional, the default name is `???` and the default country is whatever is in your config.py
 
 ## awesome config
 This is subject to change, and might be different for you than it is for me.
