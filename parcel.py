@@ -2,7 +2,7 @@ import requests
 import json
 import time
 import config
-import pycountry
+#import pycountry
 
 
 trackingUrl = 'https://parcelsapp.com/api/v3/shipments/tracking'
@@ -66,8 +66,8 @@ def process_shipments(data):
         for shipment in data['shipments']:
             #print(json.dumps(shipment, indent=4))
             ## get all the basic information
-            origin = shipment['origin'] if 'origin' in shipment else None
-            dest = shipment['destination'] if 'destination' in shipment else None
+            origin = shipment['originCode'] if 'origin' in shipment else "xx"
+            dest = shipment['destinationCode'] if 'destination' in shipment else "xx"
             status = shipment['status'] if 'status' in shipment else None
             trackingId = shipment['trackingId'] if 'trackingId' in shipment else None
 
@@ -121,20 +121,23 @@ def process_response(resp, uuid=None, attempts=0):
 
             #print(json.dumps(data))
 
-def get_cunt(country):
-    if country is None:
-        return "xx"
-    search = pycountry.countries.search_fuzzy(country)
-    if len(search) == 0:
-        return "xx"
-    return search[0].alpha_2
+## don't need this anymore, shipment has these isocodes already :)))
+#def get_cunt(country):
+#    if country is None:
+#        return "xx"
+#    search = pycountry.countries.search_fuzzy(country)
+#    if len(search) == 0:
+#        return "xx"
+#    return search[0].alpha_2
 
 def output_shipments(shipments):
     for shipment in shipments.items():
         #print(shipment)
-        print(get_cunt(shipment[1]['origin']).lower())
-        print(get_cunt(shipment[1]['destination']).lower())
+        #print(get_cunt(shipment[1]['origin']).lower())
+        #print(get_cunt(shipment[1]['destination']).lower())
         #print("?" if shipment[1]['origin'] is None else pycountry.countries.get(name=shipment[1]['origin'])
+        print(shipment[1]['origin'].lower())
+        print(shipment[1]['destination'].lower())
         print(shipment[1]['name'])
         print(shipment[1]['last update'])
         print(shipment[1]['days-in-transit'])
