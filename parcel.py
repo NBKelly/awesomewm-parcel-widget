@@ -26,16 +26,23 @@ def load_trackers():
 
     __location__ = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    with open(os.path.join(__location__, 'trackers.csv')) as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        first = True
-        for row in reader:
-            if first:
-                first = False
-                continue
-            if len(row) <= 0:
-                continue
-            trackers.append(row)
+    path = os.path.join(__location__, 'trackers.csv')
+    if os.path.isfile(path):
+        with open(path) as csvfile:
+            reader = csv.reader(csvfile, delimiter=',')
+            first = True
+            for row in reader:
+                if first:
+                    first = False
+                    continue
+                if len(row) <= 0:
+                    continue
+                trackers.append(row)
+    ## create the file if it does not exist
+    else:
+        with open(path, 'a') as f:
+            f.write("1. Tracking Number, 2. Name (kind of optional), 3. Destination country (optional - defaults to the country in your config.py), this first line is not processed.")
+            #f.close()
 
     for tracker in trackers:
         shipment = {}
