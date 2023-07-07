@@ -90,7 +90,7 @@ def process_shipments(data):
             ## get all the basic information
             origin = shipment['originCode'] if 'origin' in shipment else "xx"
             dest = shipment['destinationCode'] if 'destination' in shipment else "xx"
-            status = shipment['status'] if 'status' in shipment else None
+            status = shipment['status'] if 'status' in shipment else "NOT YET SCANNED"
             trackingId = shipment['trackingId'] if 'trackingId' in shipment else None
 
             ## see if we can pick up the days in transit

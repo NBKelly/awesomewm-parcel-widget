@@ -56,6 +56,11 @@ local function setupRows(menu_items, popup)
 
    --traverse menu items and create each row
    for _, item in ipairs(menu_items) do
+      local innertext = "("..item.days.." days, "..item.status..", "..item.lastupdate..")"
+      if item.status == "NOT YET SCANNED" then
+	 innertext = "("..item.status..")"
+      end
+
       local row = wibox.widget {
 	 {
 	    {
@@ -91,7 +96,7 @@ local function setupRows(menu_items, popup)
 		  valign="top"
 	       },
 	       {
-		  text = "("..item.days.." days, "..item.status..", "..item.lastupdate..")",
+		  text = innertext,
 		  widget = wibox.widget.textbox,
 		  valign="top"
 	       },
