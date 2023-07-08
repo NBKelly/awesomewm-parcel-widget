@@ -1,14 +1,17 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local gears = require("gears")
+local naughty = require("naughty")
 local beautiful = require("beautiful")
 
 local HOME = os.getenv('HOME')
 local ICON_DIR = HOME .. '/.config/awesome/parcelWidget/flags/'
 local TRACKER_DIR = HOME .. '/.config/awesome/parcelWidget/trackers.csv'
 local PYTHON_DIR = HOME .. '/.config/awesome/parcelWidget/parcel.py'
-local STATUS_ICON_DIR = HOME .. '/.config/awesome/parcelWidget/icons/'
-local MINUTES_PER_UPDATE=5
+--local STATUS_ICON_DIR = HOME .. '/.config/awesome/parcelWidget/icons/'
+--local MINUTES_PER_UPDATE=5
+local NOTIFY_TIMEOUT_DURATION=30
+
 
 
 local function parcelUrl(item)
@@ -133,6 +136,19 @@ local function setupRows(menu_items, popup)
    popup:setup(rows)
 end
 
+local function notify(title, text, item)
+   naughty.notify{
+      --icon = HOME_DIR ..'/.config/awesome/awesome-wm-widgets/gerrit-widget/gerrit_icon.svg',
+      title = title .. " - " .. item.status,
+      text = text,
+      timeout = NOTIFY_TIMEOUT_DURATION,
+      icon = ICON_DIR .. item.to .. '.gif'
+   }
+end
+
+local tracked_delivered = 0
+local last_menu_items = {}
+
 local function updateWidget(mywidget, title, popup)
    --widget[0]
    -- fetch the menu items from the python script
@@ -172,6 +188,25 @@ local function updateWidget(mywidget, title, popup)
 
 				    -- use the menu items to make the rows
 				    setupRows(menu_items, popup)
+
+				    -- provide notifications when an item is updated
+				    -- this could get annoying, so maybe I'll change it
+				    -- to only notify if it changes country?
+				    -- maybe I'll have a notification mode attached to the item
+				    -- in python? that sounds pretty viable, and easy to configure
+				    if #menu_items == #last_menu_items then
+				       for i=1,#menu_items do
+					  if (menu_items[i].name == last_menu_items[i]) and
+					     (menu_items[i].lastupdate ~= last_menu_items[i].lastupdate) then
+					     notify(menu_items[i].name,
+						    menu_items[i].status..": "..menu_items[i].lastupdate,
+						    menu_items[i])
+					  end
+				       end
+				    end
+
+				    last_menu_items = menu_items
+				    tracked_delivered = delivered
 
 				    -- this can probably be done cleaner
 				    local extra_text = ""
