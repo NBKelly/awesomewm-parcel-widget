@@ -12,6 +12,7 @@ trackingUrl = 'https://parcelsapp.com/api/v3/shipments/tracking'
 shipment_map = {}
 shipment_names = {}
 shipment_langs = {}
+shipment_order = []
 
 max_attempts = config.MAX_ATTEMPTS
 sleep_time = config.SLEEP_TIME
@@ -38,6 +39,8 @@ def load_trackers():
                 if len(row) <= 0:
                     continue
                 trackers.append(row)
+                #print(row[0].strip())
+                shipment_order.append(row[0].strip())
     ## create the file if it does not exist
     else:
         with open(path, 'a') as f:
@@ -153,18 +156,22 @@ def process_response(resp, uuid=None, attempts=0):
 #    return search[0].alpha_2
 
 def output_shipments(shipments):
-    for shipment in shipments.items():
+    for id in shipment_order:
+        #print(id)
+        shipment = shipments[id]
+        #print(shipment)
+        #for shipment in shipments.items():
         #print(shipment)
         #print(get_cunt(shipment[1]['origin']).lower())
         #print(get_cunt(shipment[1]['destination']).lower())
         #print("?" if shipment[1]['origin'] is None else pycountry.countries.get(name=shipment[1]['origin'])
-        print(shipment[1]['origin'].lower())
-        print(shipment[1]['destination'].lower())
-        print(shipment[1]['name'])
-        print(shipment[1]['last update'])
-        print(shipment[1]['days-in-transit'])
-        print(shipment[1]['trackingId'])
-        print(shipment[1]['currently'])
+        print(shipment['origin'].lower())
+        print(shipment['destination'].lower())
+        print(shipment['name'])
+        print(shipment['last update'])
+        print(shipment['days-in-transit'])
+        print(shipment['trackingId'])
+        print(shipment['currently'])
 
 
 ### load tracking numbers from configs
