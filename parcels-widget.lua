@@ -178,7 +178,7 @@ local function updateWidget(mywidget, title, popup)
 							  status=lines[7*i + 7]}
 
 				       -- make a note of how many are delivered or to be picked up
-				       if lines[7*i + 7] == 'arrived' then
+				       if lines[7*i + 7] == 'delivered' then
 					  delivered = delivered + 1
 				       end
 				       if lines[7*i + 7] == 'pickup' then
